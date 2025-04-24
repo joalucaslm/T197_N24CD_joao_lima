@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 40,
   },
-  logo: {},
   text: {
     marginTop: 20,
     color: colors.white,
