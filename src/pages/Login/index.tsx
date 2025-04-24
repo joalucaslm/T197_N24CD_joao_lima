@@ -51,13 +51,13 @@ export default function Login() {
       <View style={styles.containerAuth}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('Login')}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text
           style={styles.text}
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('Login')}
         >
           Esqueceu a senha?
         </Text>
@@ -66,7 +66,7 @@ export default function Login() {
       <View style={styles.containerRegister}>
         <Text
           style={styles.text}
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('Login')}
         >
           Junte-se a nós! Crie uma conta.
         </Text>
