@@ -66,7 +66,7 @@ export default function Login() {
       <View style={styles.containerRegister}>
         <Text
           style={styles.text}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('AddProcesses')}
         >
           Junte-se a nós! Crie uma conta.
         </Text>
