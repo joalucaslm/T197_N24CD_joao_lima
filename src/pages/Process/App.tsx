@@ -3,22 +3,89 @@ import {
   StyleSheet, 
   View, 
   Text, 
+  TextInput, 
+  TouchableOpacity, 
   FlatList, 
-  SafeAreaView,
-  TouchableOpacity
+  SafeAreaView
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import ProcessCard from './components/ProcessCard';
+import SearchBar from './components/SearchBar';
+import FilterButtons from './components/FilterButtons';
+import FilterModal from './components/FilterModal';
+import SortModal from './components/SortModal';
+import AddProcessoButton from './components/AddProcessoButton';
+import { ProcessoType } from './types/Processo';
 
-import ProcessCard from './ProcessCard';
-import SearchBar from './SearchBar';
-import FilterButtons from './FilterButtons';
-import FilterModal from './FilterModal';
-import SortModal from './SortModal';
-import AddButton from './AddButton';
-import { colors } from './styles/colors';
-import { processosIniciais } from './data/processosData';
+const colors = {
+  black: '#000',
+  white: '#FFF',
+  yellow: '#EEAD2D',
+  gray: '#F2F2F2',
+  lightGray: '#E0E0E0',
+  darkGray: '#707070',
+  blue: '#E6F0FF',
+  darkBlue: '#0066CC',
+};
 
-export default function ProcessScreen() {
-  const [processos, setProcessos] = useState(processosIniciais);
+// Dados iniciais de processos
+const processosIniciais: ProcessoType[] = [
+  {
+    id: '1',
+    numero: '0001234-56.2023.8.26.0100',
+    cliente: 'Maria Silva',
+    assunto: 'Ação de Indenização',
+    tribunal: 'TJSP',
+    status: 'Em andamento',
+    dataAtualizacao: '20/04/2025',
+    proximaAudiencia: '10/05/2025',
+  },
+  {
+    id: '2',
+    numero: '0007654-32.2024.8.26.0100',
+    cliente: 'João Pereira',
+    assunto: 'Divórcio Litigioso',
+    tribunal: 'TJSP',
+    status: 'Aguardando manifestação',
+    dataAtualizacao: '18/04/2025',
+    proximaAudiencia: '15/06/2025',
+  },
+  {
+    id: '3',
+    numero: '5004321-45.2024.8.13.0024',
+    cliente: 'Empresa ABC Ltda.',
+    assunto: 'Execução Fiscal',
+    tribunal: 'TJMG',
+    status: 'Concluso para decisão',
+    dataAtualizacao: '21/04/2025',
+    proximaAudiencia: '20/05/2025',
+  },
+  {
+    id: '4',
+    numero: '1002345-67.2023.4.01.3400',
+    cliente: 'Carlos Mendes',
+    assunto: 'Mandado de Segurança',
+    tribunal: 'TRF1',
+    status: 'Prazo em curso',
+    dataAtualizacao: '15/04/2025',
+    proximaAudiencia: '30/05/2025',
+  },
+];
+
+// Opções para filtros
+const statusOptions = ['Todos', 'Em andamento', 'Aguardando manifestação', 'Concluso para decisão', 'Prazo em curso'];
+const tribunalOptions = ['Todos', 'TJSP', 'TJMG', 'TRF1', 'STJ', 'STF'];
+
+// Opções para ordenação
+const sortOptions = [
+  { value: 'dataAtualizacao', label: 'Data de atualização' },
+  { value: 'cliente', label: 'Cliente' },
+  { value: 'tribunal', label: 'Tribunal' },
+  { value: 'numero', label: 'Número do processo' }
+];
+
+export default function App() {
+  const [processos, setProcessos] = useState<ProcessoType[]>(processosIniciais);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos');
   const [tribunalFilter, setTribunalFilter] = useState('Todos');
@@ -51,9 +118,11 @@ export default function ProcessScreen() {
       return a.numero.localeCompare(b.numero);
     });
 
-  const handleAddProcess = () => {
-    // Implementar função para adicionar novo processo
-    console.log('Adicionar novo processo');
+  // Limpar todos os filtros
+  const clearFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('Todos');
+    setTribunalFilter('Todos');
   };
 
   return (
@@ -63,22 +132,15 @@ export default function ProcessScreen() {
         <Text style={styles.subtitle}>Gerencie todos os seus processos em um só lugar</Text>
       </View>
       
-      {/* Barra de pesquisa */}
-      <SearchBar 
-        searchTerm={searchTerm} 
-        setSearchTerm={setSearchTerm} 
-      />
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       
-      {/* Botões de filtros e ordenação */}
       <FilterButtons 
-        setFilterModalVisible={setFilterModalVisible} 
-        setSortModalVisible={setSortModalVisible} 
+        openFilterModal={() => setFilterModalVisible(true)}
+        openSortModal={() => setSortModalVisible(true)}
       />
       
-      {/* Número de resultados */}
       <Text style={styles.resultsText}>{processosExibidos.length} processos encontrados</Text>
       
-      {/* Lista de processos */}
       <FlatList
         data={processosExibidos}
         renderItem={({ item }) => <ProcessCard processo={item} />}
@@ -90,11 +152,7 @@ export default function ProcessScreen() {
             <Text style={styles.emptyStateText}>Nenhum processo encontrado com os filtros atuais.</Text>
             <TouchableOpacity 
               style={styles.clearFiltersButton}
-              onPress={() => {
-                setSearchTerm('');
-                setStatusFilter('Todos');
-                setTribunalFilter('Todos');
-              }}
+              onPress={clearFilters}
             >
               <Text style={styles.clearFiltersText}>Limpar filtros</Text>
             </TouchableOpacity>
@@ -102,25 +160,25 @@ export default function ProcessScreen() {
         }
       />
       
-      {/* Botão flutuante para adicionar processo */}
-      <AddButton onPress={handleAddProcess} />
+      <AddProcessoButton />
       
-      {/* Modal para filtros */}
       <FilterModal 
-        filterModalVisible={filterModalVisible}
-        setFilterModalVisible={setFilterModalVisible}
+        visible={filterModalVisible}
         statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
         tribunalFilter={tribunalFilter}
+        statusOptions={statusOptions}
+        tribunalOptions={tribunalOptions}
+        setStatusFilter={setStatusFilter}
         setTribunalFilter={setTribunalFilter}
+        closeModal={() => setFilterModalVisible(false)}
       />
       
-      {/* Modal para ordenação */}
       <SortModal 
-        sortModalVisible={sortModalVisible}
-        setSortModalVisible={setSortModalVisible}
+        visible={sortModalVisible}
         orderBy={orderBy}
         setOrderBy={setOrderBy}
+        sortOptions={sortOptions}
+        closeModal={() => setSortModalVisible(false)}
       />
     </SafeAreaView>
   );
@@ -154,7 +212,7 @@ const styles = StyleSheet.create({
   },
   processList: {
     paddingHorizontal: 20,
-    paddingBottom: 80, // Espaço para o botão flutuante
+    paddingBottom: 80,
   },
   emptyState: {
     padding: 20,
@@ -175,4 +233,4 @@ const styles = StyleSheet.create({
     color: colors.yellow,
     fontWeight: 'bold',
   },
-})
+});

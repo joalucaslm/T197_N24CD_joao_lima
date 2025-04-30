@@ -1,46 +1,48 @@
-import React from 'react'
-import { 
-  StyleSheet, 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  Modal, 
-  ScrollView 
-} from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
-import { colors } from './styles/colors'
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function FilterModal({
-  filterModalVisible,
-  setFilterModalVisible,
+interface FilterModalProps {
+  visible: boolean;
+  statusFilter: string;
+  tribunalFilter: string;
+  statusOptions: string[];
+  tribunalOptions: string[];
+  setStatusFilter: (status: string) => void;
+  setTribunalFilter: (tribunal: string) => void;
+  closeModal: () => void;
+}
+
+const colors = {
+  black: '#000',
+  white: '#FFF',
+  yellow: '#EEAD2D',
+  lightGray: '#E0E0E0',
+  darkGray: '#707070',
+};
+
+const FilterModal: React.FC<FilterModalProps> = ({
+  visible,
   statusFilter,
-  setStatusFilter,
   tribunalFilter,
+  statusOptions,
+  tribunalOptions,
+  setStatusFilter,
   setTribunalFilter,
-}) {
-  // Opções para filtros
-  const statusOptions = [
-    'Todos', 
-    'Em andamento', 
-    'Aguardando manifestação', 
-    'Concluso para decisão', 
-    'Prazo em curso'
-  ];
-  
-  const tribunalOptions = ['Todos', 'TJSP', 'TJMG', 'TRF1', 'STJ', 'STF'];
-
+  closeModal
+}) => {
   return (
     <Modal
-      visible={filterModalVisible}
+      visible={visible}
       animationType="slide"
       transparent={true}
-      onRequestClose={() => setFilterModalVisible(false)}
+      onRequestClose={closeModal}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Filtros</Text>
-            <TouchableOpacity onPress={() => setFilterModalVisible(false)}>
+            <TouchableOpacity onPress={closeModal}>
               <AntDesign name="close" size={24} color={colors.black} />
             </TouchableOpacity>
           </View>
@@ -99,15 +101,15 @@ export default function FilterModal({
           
           <TouchableOpacity 
             style={styles.applyButton}
-            onPress={() => setFilterModalVisible(false)}
+            onPress={closeModal}
           >
             <Text style={styles.applyButtonText}>Aplicar filtros</Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -178,4 +180,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-})
+});
+
+export default FilterModal;

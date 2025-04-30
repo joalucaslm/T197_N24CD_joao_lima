@@ -1,23 +1,35 @@
-import React from 'react'
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
-import { Feather } from '@expo/vector-icons'
-import { colors } from './styles/colors'
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
-export default function FilterButtons({ setFilterModalVisible, setSortModalVisible }) {
+interface FilterButtonsProps {
+  openFilterModal: () => void;
+  openSortModal: () => void;
+}
+
+const colors = {
+  black: '#000',
+  white: '#FFF',
+  yellow: '#EEAD2D',
+  lightGray: '#E0E0E0',
+  darkGray: '#707070',
+};
+
+const FilterButtons: React.FC<FilterButtonsProps> = ({ openFilterModal, openSortModal }) => {
   return (
     <View style={styles.filterRow}>
-      <TouchableOpacity style={styles.filterButton} onPress={() => setFilterModalVisible(true)}>
+      <TouchableOpacity style={styles.filterButton} onPress={openFilterModal}>
         <Feather name="filter" size={18} color={colors.darkGray} />
         <Text style={styles.filterButtonText}>Filtros</Text>
       </TouchableOpacity>
       
-      <TouchableOpacity style={styles.filterButton} onPress={() => setSortModalVisible(true)}>
+      <TouchableOpacity style={styles.filterButton} onPress={openSortModal}>
         <Feather name="bar-chart-2" size={18} color={colors.darkGray} />
         <Text style={styles.filterButtonText}>Ordenar</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   filterRow: {
@@ -39,4 +51,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: colors.darkGray,
   },
-})
+});
+
+export default FilterButtons;

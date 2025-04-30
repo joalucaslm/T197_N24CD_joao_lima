@@ -1,15 +1,24 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
-import { colors } from 'src/components/colors/colors.txs'
-src/components/colors/colors.txs
-export default function AddButton({ onPress }) {
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+
+const colors = {
+  black: '#000',
+  white: '#FFF',
+  yellow: '#EEAD2D',
+};
+
+interface AddProcessoButtonProps {
+  onPress?: () => void;
+}
+
+const AddProcessoButton: React.FC<AddProcessoButtonProps> = ({ onPress }) => {
   return (
     <TouchableOpacity style={styles.addButton} onPress={onPress}>
       <AntDesign name="plus" size={24} color={colors.white} />
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   addButton: {
@@ -24,4 +33,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 5,
   },
-})
+});
+
+export default AddProcessoButton;

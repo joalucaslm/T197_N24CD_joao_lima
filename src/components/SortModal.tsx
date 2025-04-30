@@ -1,41 +1,47 @@
-import React from 'react'
-import { 
-  StyleSheet, 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  Modal, 
-  ScrollView 
-} from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
-import { colors } from './colors'
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function SortModal({
-  sortModalVisible,
-  setSortModalVisible,
+interface SortOption {
+  value: string;
+  label: string;
+}
+
+interface SortModalProps {
+  visible: boolean;
+  orderBy: string;
+  sortOptions: SortOption[];
+  setOrderBy: (option: string) => void;
+  closeModal: () => void;
+}
+
+const colors = {
+  black: '#000',
+  white: '#FFF',
+  yellow: '#EEAD2D',
+  lightGray: '#E0E0E0',
+  darkGray: '#707070',
+};
+
+const SortModal: React.FC<SortModalProps> = ({
+  visible,
   orderBy,
+  sortOptions,
   setOrderBy,
-}) {
-  // Opções para ordenação
-  const sortOptions = [
-    { value: 'dataAtualizacao', label: 'Data de atualização' },
-    { value: 'cliente', label: 'Cliente' },
-    { value: 'tribunal', label: 'Tribunal' },
-    { value: 'numero', label: 'Número do processo' }
-  ];
-
+  closeModal
+}) => {
   return (
     <Modal
-      visible={sortModalVisible}
+      visible={visible}
       animationType="slide"
       transparent={true}
-      onRequestClose={() => setSortModalVisible(false)}
+      onRequestClose={closeModal}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Ordenar por</Text>
-            <TouchableOpacity onPress={() => setSortModalVisible(false)}>
+            <TouchableOpacity onPress={closeModal}>
               <AntDesign name="close" size={24} color={colors.black} />
             </TouchableOpacity>
           </View>
@@ -50,7 +56,7 @@ export default function SortModal({
                 ]}
                 onPress={() => {
                   setOrderBy(option.value);
-                  setSortModalVisible(false);
+                  closeModal();
                 }}
               >
                 <Text 
@@ -70,8 +76,8 @@ export default function SortModal({
         </View>
       </View>
     </Modal>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -121,4 +127,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontWeight: '500',
   },
-})
+});
+
+export default SortModal;
