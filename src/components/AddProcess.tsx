@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '@/navigation'
 
 const colors = {
   black: '#000',
@@ -12,9 +15,13 @@ interface AddProcessoButtonProps {
   onPress?: () => void;
 }
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddProcesses'>
+
 const AddProcessoButton: React.FC<AddProcessoButtonProps> = ({ onPress }) => {
+    const navigation = useNavigation<NavigationProp>()
+  
   return (
-    <TouchableOpacity style={styles.addButton} onPress={onPress}>
+    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddProcesses')}>
       <AntDesign name="plus" size={24} color={colors.white} />
     </TouchableOpacity>
   );

@@ -47,21 +47,21 @@ export default function AdminRegister() {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="#CCC"
+          placeholderTextColor="#fff"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="Usuário"
-          placeholderTextColor="#CCC"
+          placeholderTextColor="#fff"
           value={user}
           onChangeText={setuser}
         />
         <TextInput
           style={styles.input}
           placeholder="password"
-          placeholderTextColor="#CCC"
+          placeholderTextColor="#fff"
           secureTextEntry
           value={password}
           onChangeText={setpassword}

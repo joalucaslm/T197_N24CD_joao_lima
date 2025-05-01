@@ -9,13 +9,13 @@ import {
   SafeAreaView
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import ProcessCard from './components/ProcessCard';
-import SearchBar from './components/SearchBar';
-import FilterButtons from './components/FilterButtons';
-import FilterModal from './components/FilterModal';
-import SortModal from './components/SortModal';
-import AddProcessoButton from './components/AddProcessoButton';
-import { ProcessoType } from './types/Processo';
+import ProcessCard from '@/components/ProcessCard';
+import SearchBar from '@/components/SearchBar';
+import FilterButtons from '@/components/FilterButtons';
+import FilterModal from '@/components/FilterModal';
+import SortModal from '@/components/SortModal';
+import AddProcessoButton from '@/components/AddProcess';
+import { ProcessoType } from '@/components/Process';
 
 const colors = {
   black: '#000',
@@ -84,7 +84,7 @@ const sortOptions = [
   { value: 'numero', label: 'Número do processo' }
 ];
 
-export default function App() {
+export default function ProcessesView() {
   const [processos, setProcessos] = useState<ProcessoType[]>(processosIniciais);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos');

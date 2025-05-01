@@ -22,7 +22,7 @@ export default function UserHeader() {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: 'static',
     top: 0,
     left: 0,
     right: 0,

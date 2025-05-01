@@ -57,11 +57,12 @@ export default function Login() {
         </TouchableOpacity>
         <Text
           style={styles.text}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('ProcessesView')}
         >
           Esqueceu a senha?
         </Text>
       </View>
+<<<<<<< Updated upstream
 
       <View style={styles.containerRegister}>
         <Text
@@ -71,6 +72,8 @@ export default function Login() {
           Junte-se a nós! Crie uma conta.
         </Text>
       </View>
+=======
+>>>>>>> Stashed changes
     </View>
   )
 }
@@ -103,10 +106,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 24,
-  },
-  containerRegister: {
-    position: 'absolute',
-    bottom: 40,
   },
   text: {
     marginTop: 20,

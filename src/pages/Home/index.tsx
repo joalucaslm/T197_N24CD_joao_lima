@@ -21,7 +21,7 @@ export default function Home() {
           style={styles.button}
           onPress={() => navigation.navigate('AddProcesses')}
         >
-          <Text>Adidiconar novo admin</Text>
+          <Text style={styles.buttonText}>Cadastrar novo administrado</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -36,10 +36,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    width: 200,
     backgroundColor: colors.yellow,
     padding: 12,
     borderRadius: 30,
     marginVertical: 5,
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: "800"
   },
 })
