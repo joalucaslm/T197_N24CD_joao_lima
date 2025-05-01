@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { AntDesign, Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { ProcessoType } from '../types/Processo';
 
 interface ProcessCardProps {
   processo: ProcessoType;
+  onPress?: () => void; // Added onPress handler prop
 }
 
 const colors = {
@@ -18,9 +19,13 @@ const colors = {
   darkBlue: '#0066CC',
 };
 
-const ProcessCard: React.FC<ProcessCardProps> = ({ processo }) => {
+const ProcessCard: React.FC<ProcessCardProps> = ({ processo, onPress }) => {
   return (
-    <View style={styles.card}>  
+    <TouchableOpacity 
+      style={styles.card} 
+      onPress={onPress}
+      activeOpacity={0.7} // Controls opacity when pressed
+    >  
       <View style={styles.cardBorder} />
       <View style={styles.cardContent}>
         <View style={styles.cardHeader}>
@@ -56,7 +61,7 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ processo }) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
