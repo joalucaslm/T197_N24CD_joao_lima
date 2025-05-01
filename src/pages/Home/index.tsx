@@ -19,7 +19,7 @@ export default function Home() {
       <View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('AdminRegister')}
+          onPress={() => navigation.navigate('AddProcesses')}
         >
           <Text>Adidiconar novo admin</Text>
         </TouchableOpacity>
