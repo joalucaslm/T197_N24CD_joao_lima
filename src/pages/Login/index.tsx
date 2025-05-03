@@ -1,21 +1,20 @@
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/navigation";
+
+import InputIcon from "@/components/InputIcon";
 import colors from "@/styles/globalStyles";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Login">;
 
 export default function Login() {
   const navigation = useNavigation<NavigationProp>();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <View style={styles.container}>
@@ -23,30 +22,22 @@ export default function Login() {
       <View style={styles.logoContainer}>
         <Image source={require("@/assets/logo/yellow-logo.png")} />
       </View>
-      <View style={styles.inputContainer}>
-        <Image
-          source={require("@/assets/icons/yellow-mail.png")}
-          style={styles.icon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          placeholderTextColor="#FFF"
-        />
-      </View>
 
-      <View style={styles.inputContainer}>
-        <Image
-          source={require("@/assets/icons/yellow-lock.png")}
-          style={styles.icon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          placeholderTextColor="#FFF"
-          secureTextEntry
-        />
-      </View>
+      <InputIcon
+        placeholder="E-mail"
+        value={email}
+        onChangeText={setEmail}
+        icon={require("@/assets/icons/yellow-mail.png")}
+      />
+
+      <InputIcon
+        placeholder="Senha"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        eyeSecurity
+        icon={require("@/assets/icons/yellow-lock.png")}
+      />
 
       <View style={styles.containerAuth}>
         <TouchableOpacity
@@ -77,16 +68,6 @@ const styles = StyleSheet.create({
     position: "relative",
     bottom: 40,
   },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: colors.yellow,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 12,
-    width: 250,
-  },
   containerAuth: {
     marginTop: 15,
     flexDirection: "column",
@@ -101,16 +82,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "center",
     fontWeight: "normal",
-  },
-  input: {
-    flex: 1,
-    color: colors.white,
-    paddingVertical: 10,
-  },
-  icon: {
-    width: 20,
-    height: 20,
-    marginRight: 8,
   },
   button: {
     width: 200,
