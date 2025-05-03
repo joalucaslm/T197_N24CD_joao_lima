@@ -14,6 +14,7 @@ export default function InputIcon({
   value,
   onChangeText,
   icon,
+  firstIcon = true,
   secureTextEntry = false,
   eyeSecurity = false,
 }: InputIconType) {
@@ -25,7 +26,7 @@ export default function InputIcon({
 
   return (
     <View style={styles.inputContainer}>
-      <Image source={icon} style={styles.icon} />
+      {firstIcon && <Image source={icon} style={styles.icon} />}
       <TextInput
         style={styles.input}
         placeholder={placeholder}
