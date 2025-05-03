@@ -1,27 +1,24 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-
-interface FilterModalProps {
-  visible: boolean;
-  statusFilter: string;
-  tribunalFilter: string;
-  statusOptions: string[];
-  tribunalOptions: string[];
-  setStatusFilter: (status: string) => void;
-  setTribunalFilter: (tribunal: string) => void;
-  closeModal: () => void;
-}
+import React from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  ScrollView,
+} from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import { FilterButtonType } from "@/interface/FilterButton";
 
 const colors = {
-  black: '#000',
-  white: '#FFF',
-  yellow: '#EEAD2D',
-  lightGray: '#E0E0E0',
-  darkGray: '#707070',
+  black: "#000",
+  white: "#FFF",
+  yellow: "#EEAD2D",
+  lightGray: "#E0E0E0",
+  darkGray: "#707070",
 };
 
-const FilterModal: React.FC<FilterModalProps> = ({
+export default function FilterModal({
   visible,
   statusFilter,
   tribunalFilter,
@@ -29,8 +26,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
   tribunalOptions,
   setStatusFilter,
   setTribunalFilter,
-  closeModal
-}) => {
+  closeModal,
+}: FilterButtonType) {
   return (
     <Modal
       visible={visible}
@@ -46,22 +43,22 @@ const FilterModal: React.FC<FilterModalProps> = ({
               <AntDesign name="close" size={24} color={colors.black} />
             </TouchableOpacity>
           </View>
-          
+
           <ScrollView style={styles.modalBody}>
             <Text style={styles.filterLabel}>Status</Text>
-            {statusOptions.map(status => (
-              <TouchableOpacity 
+            {statusOptions.map((status) => (
+              <TouchableOpacity
                 key={status}
                 style={[
                   styles.filterOption,
-                  statusFilter === status && styles.filterOptionSelected
+                  statusFilter === status && styles.filterOptionSelected,
                 ]}
                 onPress={() => setStatusFilter(status)}
               >
-                <Text 
+                <Text
                   style={[
                     styles.filterOptionText,
-                    statusFilter === status && styles.filterOptionTextSelected
+                    statusFilter === status && styles.filterOptionTextSelected,
                   ]}
                 >
                   {status}
@@ -71,23 +68,24 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 )}
               </TouchableOpacity>
             ))}
-            
+
             <View style={styles.separator} />
-            
+
             <Text style={styles.filterLabel}>Tribunal</Text>
-            {tribunalOptions.map(tribunal => (
-              <TouchableOpacity 
+            {tribunalOptions.map((tribunal) => (
+              <TouchableOpacity
                 key={tribunal}
                 style={[
                   styles.filterOption,
-                  tribunalFilter === tribunal && styles.filterOptionSelected
+                  tribunalFilter === tribunal && styles.filterOptionSelected,
                 ]}
                 onPress={() => setTribunalFilter(tribunal)}
               >
-                <Text 
+                <Text
                   style={[
                     styles.filterOptionText,
-                    tribunalFilter === tribunal && styles.filterOptionTextSelected
+                    tribunalFilter === tribunal &&
+                      styles.filterOptionTextSelected,
                   ]}
                 >
                   {tribunal}
@@ -98,64 +96,61 @@ const FilterModal: React.FC<FilterModalProps> = ({
               </TouchableOpacity>
             ))}
           </ScrollView>
-          
-          <TouchableOpacity 
-            style={styles.applyButton}
-            onPress={closeModal}
-          >
+
+          <TouchableOpacity style={styles.applyButton} onPress={closeModal}>
             <Text style={styles.applyButtonText}>Aplicar filtros</Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
   );
-};
+}
 
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingBottom: 20,
-    maxHeight: '70%',
+    maxHeight: "70%",
   },
   modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: colors.lightGray,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   modalBody: {
     padding: 20,
   },
   filterLabel: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
     color: colors.black,
   },
   filterOption: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 5,
     borderBottomWidth: 1,
     borderBottomColor: colors.lightGray,
   },
   filterOptionSelected: {
-    backgroundColor: 'rgba(238, 173, 45, 0.1)',
+    backgroundColor: "rgba(238, 173, 45, 0.1)",
   },
   filterOptionText: {
     fontSize: 14,
@@ -163,7 +158,7 @@ const styles = StyleSheet.create({
   },
   filterOptionTextSelected: {
     color: colors.black,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   separator: {
     height: 20,
@@ -173,13 +168,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     padding: 15,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   applyButtonText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
   },
 });
-
-export default FilterModal;

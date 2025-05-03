@@ -1,4 +1,4 @@
-export interface ProcessoType {
+export interface ProcessType {
     id: string;
     numero: string;
     cliente: string;

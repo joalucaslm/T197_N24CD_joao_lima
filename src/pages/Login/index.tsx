@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -6,26 +6,26 @@ import {
   View,
   TouchableOpacity,
   Image,
-} from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '@/navigation'
-import colors from '@/styles/globalStyles'
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/navigation";
+import colors from "@/styles/globalStyles";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Login">;
 
 export default function Login() {
-  const navigation = useNavigation<NavigationProp>()
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.logoContainer}>
-        <Image source={require('@/assets/logo/yellow-logo.png')} />
+        <Image source={require("@/assets/logo/yellow-logo.png")} />
       </View>
       <View style={styles.inputContainer}>
         <Image
-          source={require('@/assets/icons/yellow-mail.png')}
+          source={require("@/assets/icons/yellow-mail.png")}
           style={styles.icon}
         />
         <TextInput
@@ -37,7 +37,7 @@ export default function Login() {
 
       <View style={styles.inputContainer}>
         <Image
-          source={require('@/assets/icons/yellow-lock.png')}
+          source={require("@/assets/icons/yellow-lock.png")}
           style={styles.icon}
         />
         <TextInput
@@ -51,47 +51,35 @@ export default function Login() {
       <View style={styles.containerAuth}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate("Home")}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text
           style={styles.text}
-          onPress={() => navigation.navigate('ProcessesView')}
+          onPress={() => navigation.navigate("ProcessesView")}
         >
           Esqueceu a senha?
         </Text>
       </View>
-<<<<<<< Updated upstream
-
-      <View style={styles.containerRegister}>
-        <Text
-          style={styles.text}
-          onPress={() => navigation.navigate('AdminRegister')}
-        >
-          Junte-se a nós! Crie uma conta.
-        </Text>
-      </View>
-=======
->>>>>>> Stashed changes
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.black,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   logoContainer: {
-    position: 'relative',
+    position: "relative",
     bottom: 40,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: colors.yellow,
     borderRadius: 8,
@@ -101,18 +89,18 @@ const styles = StyleSheet.create({
   },
   containerAuth: {
     marginTop: 15,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
     paddingHorizontal: 24,
   },
   text: {
     marginTop: 20,
     color: colors.white,
     fontSize: 12,
-    textAlign: 'center',
-    fontWeight: 'normal',
+    textAlign: "center",
+    fontWeight: "normal",
   },
   input: {
     flex: 1,
@@ -134,7 +122,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.white,
     fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
-})
+});

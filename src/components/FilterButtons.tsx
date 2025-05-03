@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-
-interface FilterButtonsProps {
-  openFilterModal: () => void;
-  openSortModal: () => void;
-}
+import { FilterButtonsProps } from '@/interface/FilterButton';
 
 const colors = {
   black: '#000',
@@ -15,7 +11,7 @@ const colors = {
   darkGray: '#707070',
 };
 
-const FilterButtons: React.FC<FilterButtonsProps> = ({ openFilterModal, openSortModal }) => {
+export default function FilterButtons({ openFilterModal, openSortModal}: FilterButtonsProps) {
   return (
     <View style={styles.filterRow}>
       <TouchableOpacity style={styles.filterButton} onPress={openFilterModal}>
@@ -28,7 +24,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ openFilterModal, openSort
         <Text style={styles.filterButtonText}>Ordenar</Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 };
 
 const styles = StyleSheet.create({
@@ -52,5 +48,3 @@ const styles = StyleSheet.create({
     color: colors.darkGray,
   },
 });
-
-export default FilterButtons;

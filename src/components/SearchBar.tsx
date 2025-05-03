@@ -1,25 +1,29 @@
-import React from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-
-interface SearchBarProps {
-  searchTerm: string;
-  setSearchTerm: (text: string) => void;
-}
+import React from "react";
+import { StyleSheet, View, TextInput } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { SearchBarType } from "@/interface/SearchBar";
 
 const colors = {
-  black: '#000',
-  white: '#FFF',
-  yellow: '#EEAD2D',
-  gray: '#F2F2F2',
-  lightGray: '#E0E0E0',
-  darkGray: '#707070',
+  black: "#000",
+  white: "#FFF",
+  yellow: "#EEAD2D",
+  gray: "#F2F2F2",
+  lightGray: "#E0E0E0",
+  darkGray: "#707070",
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm }) => {
+export default function SearchBar({
+  searchTerm,
+  setSearchTerm,
+}: SearchBarType) {
   return (
     <View style={styles.searchContainer}>
-      <Feather name="search" size={20} color={colors.darkGray} style={styles.searchIcon} />
+      <Feather
+        name="search"
+        size={20}
+        color={colors.darkGray}
+        style={styles.searchIcon}
+      />
       <TextInput
         style={styles.searchInput}
         placeholder="Buscar processo, cliente ou assunto..."
@@ -28,12 +32,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm }) => {
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.white,
     borderRadius: 8,
     marginHorizontal: 20,
@@ -47,8 +51,6 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    height: '100%',
+    height: "100%",
   },
 });
-
-export default SearchBar;

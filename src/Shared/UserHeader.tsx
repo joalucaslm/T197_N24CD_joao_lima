@@ -22,7 +22,7 @@ export default function UserHeader() {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'static',
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
     borderBottomColor: colors.yellow,
     borderBottomWidth: 1,
   },

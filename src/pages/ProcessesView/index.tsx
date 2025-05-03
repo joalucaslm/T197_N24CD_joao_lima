@@ -8,14 +8,13 @@ import {
   FlatList, 
   SafeAreaView
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import ProcessCard from '@/components/ProcessCard';
 import SearchBar from '@/components/SearchBar';
 import FilterButtons from '@/components/FilterButtons';
 import FilterModal from '@/components/FilterModal';
 import SortModal from '@/components/SortModal';
 import AddProcessoButton from '@/components/AddProcess';
-import { ProcessoType } from '@/components/Process';
+import { ProcessoType } from '@/interface/Process';
 
 const colors = {
   black: '#000',
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 40,
     paddingBottom: 10,
   },
   title: {

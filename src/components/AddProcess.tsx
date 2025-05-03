@@ -11,21 +11,17 @@ const colors = {
   yellow: '#EEAD2D',
 };
 
-interface AddProcessoButtonProps {
-  onPress?: () => void;
-}
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'AdminRegister'>
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddProcesses'>
+export default function AddProcessoButton() {
+  const navigation = useNavigation<NavigationProp>();
 
-const AddProcessoButton: React.FC<AddProcessoButtonProps> = ({ onPress }) => {
-    const navigation = useNavigation<NavigationProp>()
-  
   return (
-    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddProcesses')}>
+    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AdminRegister")}>
       <AntDesign name="plus" size={24} color={colors.white} />
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   addButton: {
@@ -41,5 +37,3 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
-
-export default AddProcessoButton;
