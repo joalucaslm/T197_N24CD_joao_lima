@@ -3,6 +3,8 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 import UserHeader from "@/Shared/UserHeader";
 import colors from "@/styles/globalStyles";
@@ -12,10 +14,13 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
 
+  const user = useSelector((state: RootState) => state.user);
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <UserHeader />
+      <UserHeader user={user.user} job={user.job} image={user.image}/>
+
       <View>
         <TouchableOpacity
           style={styles.button}
@@ -59,4 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "800",
   },
+  userText: {
+    color: colors.white,
+  }
 });

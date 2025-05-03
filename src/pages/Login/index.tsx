@@ -19,10 +19,15 @@ import { db } from "@/services/firebase";
 import InputIcon from "@/components/InputIcon";
 import colors from "@/styles/globalStyles";
 
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/features/user/userSlice";
+
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Login">;
 
 export default function Login() {
   const navigation = useNavigation<NavigationProp>();
+  const dispatch = useDispatch(); 
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -42,12 +47,21 @@ export default function Login() {
         const data = doc.data();
         if (data.email === email && data.password === password) {
           userFound = true;
+
+          dispatch(setUser({
+            criadoEm: data.criadoEm?.toDate().toString() || "", 
+            email: data.email,
+            image: data.image,
+            job: data.job,
+            password: data.password,
+            user: data.user,
+          }));
+
+          navigation.navigate("Home");
         }
       });
 
-      if (userFound) {
-        navigation.navigate("Home");
-      } else {
+      if (!userFound) {
         Alert.alert("Erro", "E-mail ou senha incorretos");
       }
     } catch (error) {
@@ -55,7 +69,7 @@ export default function Login() {
       Alert.alert("Erro", "Ocorreu um erro ao tentar fazer login");
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
