@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/navigation";
+
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/services/firebase";
 
 import InputIcon from "@/components/InputIcon";
 import colors from "@/styles/globalStyles";
@@ -16,6 +26,36 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Erro", "Preencha todos os campos");
+      return;
+    }
+
+    try {
+      const usersRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersRef);
+
+      let userFound = false;
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.email === email && data.password === password) {
+          userFound = true;
+        }
+      });
+
+      if (userFound) {
+        navigation.navigate("Home");
+      } else {
+        Alert.alert("Erro", "E-mail ou senha incorretos");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      Alert.alert("Erro", "Ocorreu um erro ao tentar fazer login");
+    }
+  };
+  
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -42,16 +82,10 @@ export default function Login() {
       <View style={styles.containerAuth}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Home")}
+          onPress={handleLogin}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <Text
-          style={styles.text}
-          onPress={() => navigation.navigate("ProcessesView")}
-        >
-          Esqueceu a senha?
-        </Text>
       </View>
     </View>
   );

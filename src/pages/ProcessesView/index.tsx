@@ -8,27 +8,19 @@ import {
   FlatList, 
   SafeAreaView
 } from 'react-native';
+
 import ProcessCard from '@/components/ProcessCard';
 import SearchBar from '@/components/SearchBar';
 import FilterButtons from '@/components/FilterButtons';
 import FilterModal from '@/components/FilterModal';
 import SortModal from '@/components/SortModal';
 import AddProcessoButton from '@/components/AddProcess';
-import { ProcessoType } from '@/interface/Process';
 
-const colors = {
-  black: '#000',
-  white: '#FFF',
-  yellow: '#EEAD2D',
-  gray: '#F2F2F2',
-  lightGray: '#E0E0E0',
-  darkGray: '#707070',
-  blue: '#E6F0FF',
-  darkBlue: '#0066CC',
-};
+import { ProcessType } from '@/interface/Process';
+import colors from '@/styles/globalStyles';
 
 // Dados iniciais de processos
-const processosIniciais: ProcessoType[] = [
+const processosIniciais: ProcessType[] = [
   {
     id: '1',
     numero: '0001234-56.2023.8.26.0100',

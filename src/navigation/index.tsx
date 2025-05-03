@@ -3,13 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Login from "@/pages/Login";
 import Home from "@/pages/Home";
-import AddProcesses from "@/pages/AddProcesses";
+import AddProcess from "@/pages/AddProcess";
 import AdminRegister from "@/pages/AdminRegister";
 import ProcessesView from "@/pages/ProcessesView";
 
 export type RootStackParamList = {
   Login: undefined;
-  AddProcesses: undefined;
+  AddProcess: undefined;
   Home: undefined;
   AdminRegister: undefined;
   ProcessesView: undefined;
@@ -29,7 +29,7 @@ export default function Routes() {
         <Stack.Screen name="AdminRegister" component={AdminRegister} />
 
         <Stack.Screen name="ProcessesView" component={ProcessesView} />
-        <Stack.Screen name="AddProcesses" component={AddProcesses} />
+        <Stack.Screen name="AddProcess" component={AddProcess} />
       </Stack.Navigator>
     </NavigationContainer>
   );
