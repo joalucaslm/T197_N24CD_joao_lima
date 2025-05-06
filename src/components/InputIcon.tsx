@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: colors.white,
+    color: colors.lightGray,
     paddingVertical: 10,
   },
   icon: {

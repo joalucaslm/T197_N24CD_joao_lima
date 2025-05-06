@@ -11,13 +11,13 @@ const colors = {
   yellow: '#EEAD2D',
 };
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'AdminRegister'>
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddProcess'>
 
 export default function AddProcessoButton() {
   const navigation = useNavigation<NavigationProp>();
 
   return (
-    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AdminRegister")}>
+    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddProcess")}>
       <AntDesign name="plus" size={24} color={colors.white} />
     </TouchableOpacity>
   );

@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: colors.gray,
+    backgroundColor: colors.yellow,
     paddingTop: 20,
     paddingBottom: 10,
     zIndex: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderBottomColor: colors.yellow,
+    borderBottomColor: colors.black,
     borderBottomWidth: 1,
   },
   header: {
@@ -59,9 +59,9 @@ const styles = StyleSheet.create({
   },
   user: {
     fontSize: 20,
-    color: colors.white,
+    color: colors.black,
   },
   userJob: {
-    color: colors.white,
+    color: colors.black,
   },
 });

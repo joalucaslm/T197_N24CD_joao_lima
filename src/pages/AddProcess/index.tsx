@@ -1,49 +1,137 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { useState } from 'react';
+  import { StatusBar } from "expo-status-bar";
+  import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+  import { useState } from "react";
+  import { Picker } from "@react-native-picker/picker";
+  import DateTimePicker from "@react-native-community/datetimepicker";
+  import colors from "@/styles/globalStyles";
+
+  import { collection, addDoc, Timestamp } from "firebase/firestore";
+  import { db } from "@/services/firebase";
+  import { Alert } from "react-native";
+
+  import WaveShape from "@/components/WaveShape";
+  import InputIcon from "@/components/InputIcon";
+
 
 export default function AddProcesses() {
-  const [text_lawyer_name, setText_lawyer_name] = useState('');
-  const [text_process_number, setText_process_number] = useState('');
-  const [text_observations, setText_observations] = useState('');
+  const [processNumber, setProcessNumber] = useState("");
+  const [client, setClient] = useState("");
+  const [subject, setSubject] = useState("");
+  const [court, setCourt] = useState("");
+  const [nextHearing, setNextHearing] = useState("");
+  const [status, setStatus] = useState("");
+
+  const [showPicker, setShowPicker] = useState(false);
+  const [date, setDate] = useState(new Date());
+
+  const handleAddProcess = async () => {
+    if (!processNumber || !client || !subject || !court || !nextHearing || !status) {
+      Alert.alert("Erro", "Preencha todos os campos");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "processes"), {
+        processNumber,
+        client,
+        subject,
+        court,
+        nextHearing,
+        status,
+        createdAt: Timestamp.now(),
+        lastUpdate: Timestamp.now(),
+      });
+
+      Alert.alert("Sucesso", "Processo adicionado com sucesso!");
+
+      setProcessNumber("");
+      setClient("");
+      setSubject("");
+      setCourt("");
+      setNextHearing("");
+      setStatus("");
+    } catch (error) {
+      console.error("Erro ao adicionar processo:", error);
+      Alert.alert("Erro", "Não foi possível adicionar o processo");
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Adicionar (admin)</Text>
-      <Text style={styles.subtitle}>Informações do processo</Text>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Nome do advogado</Text>
-        <TextInput
-          style={styles.input}
-          value={text_lawyer_name}
-          onChangeText={setText_lawyer_name}
-          placeholder=""
-          placeholderTextColor="#999"
+      <StatusBar style="auto" />
+      <WaveShape />
+      <View style={styles.inputsContainer}>
+        <Text style={styles.text}>Adicione o processo</Text>
+        <InputIcon
+          placeholder="Número do processo"
+          value={processNumber}
+          onChangeText={setProcessNumber}
+          firstIcon={false}
+        />
+        <InputIcon
+          placeholder="Email do cliente"
+          value={client}
+          onChangeText={setClient}
+          firstIcon={false}
+        />
+        <InputIcon
+          placeholder="Assunto"
+          value={subject}
+          onChangeText={setSubject}
+          firstIcon={false}
+        />
+        <InputIcon
+          placeholder="Tribunal"
+          value={court}
+          onChangeText={setCourt}
+          firstIcon={false}
         />
 
-        <Text style={styles.label}>Num processo</Text>
-        <TextInput
-          style={styles.input}
-          value={text_process_number}
-          onChangeText={setText_process_number}
-          placeholder=""
-          placeholderTextColor="#999"
-          keyboardType="numeric"
-        />
+        <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateButton}>
+          <Text style={styles.dateText}>
+            {nextHearing
+              ? `Data da audiência: ${new Date(nextHearing).toLocaleDateString()}`
+              : "Selecionar data da próxima audiência"}
+          </Text>
+        </TouchableOpacity>
 
-        <Text style={styles.label}>Observações</Text>
-        <TextInput
-          style={[styles.input, styles.observationsInput]}
-          value={text_observations}
-          onChangeText={setText_observations}
-          placeholder=""
-          placeholderTextColor="#999"
-          multiline
-        />
+        {showPicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              const currentDate = selectedDate || date;
+              setShowPicker(false);
+              setDate(currentDate);
+              setNextHearing(currentDate.toISOString());
+            }}
+          />
+        )}
+
+        <Picker
+          selectedValue={status}
+          onValueChange={(itemValue) => setStatus(itemValue)}
+          style={styles.picker}
+          dropdownIconColor={colors.yellow}
+        >
+          <Picker.Item label="Selecione um status" value="" />
+          <Picker.Item label="Distribuído" value="distribuido" />
+          <Picker.Item label="Em andamento" value="em_andamento" />
+          <Picker.Item label="Concluso para decisão" value="concluso_para_decisao" />
+          <Picker.Item label="Aguardando audiência" value="aguardando_audiencia" />
+          <Picker.Item label="Sentenciado" value="sentenciado" />
+          <Picker.Item label="Recursal" value="recursal" />
+          <Picker.Item label="Suspenso" value="suspenso" />
+          <Picker.Item label="Arquivado" value="arquivado" />
+          <Picker.Item label="Trânsito em julgado" value="transito_em_julgado" />
+          <Picker.Item label="Extinto" value="extinto" />
+        </Picker>
+
+        <TouchableOpacity style={styles.button} onPress={handleAddProcess}>
+          <Text style={styles.buttonText}>Adicionar</Text>
+        </TouchableOpacity>
       </View>
-
-      <StatusBar style="light" />
     </View>
   );
 }
@@ -51,49 +139,52 @@ export default function AddProcesses() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0e0e0e',
-    alignItems: 'center',
+    backgroundColor: "#0e0e0e",
+    alignItems: "center",
     paddingTop: 60,
   },
-
-
-  title: {
-    color: '#EEAD2D',
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  inputsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    top: 100,
   },
-  subtitle: {
-    color: '#EEAD2D',
-    fontSize: 18,
-    marginBottom: 30,
+  text: {
+    fontSize: 25,
+    color: colors.white,
+    position: "relative",
+    bottom: 40,
+    right: 30,
   },
-  card: {
-    backgroundColor:  '#000',
-    borderColor: '#EEAD2D',
-    borderWidth: 2,
-    borderRadius: 20,
-    padding: 20,
-    width: '85%',
-  },
-  label: {
-    color: '#EEAD2D',
-    fontSize: 16,
-    marginBottom: 5,
-    marginTop: 10,
-  },
-  input: {
-    backgroundColor: '#1c1c1c',
-    borderColor: '#FFF',
-    borderWidth: 1,
-    borderRadius: 8,
+  dateButton: {
+    backgroundColor: "#1e1e1e",
     padding: 10,
-    color: '#FFFFFF',
-    fontSize: 16,
+    borderRadius: 8,
+    marginTop: 10,
+    marginBottom: 10,
+    width: 250,
   },
-
-  observationsInput: {
-    height: 100, 
-    textAlignVertical: 'top', 
+  dateText: {
+    color: colors.yellow,
+    textAlign: "center",
+  },
+  picker: {
+    height: 50,
+    width: 250,
+    color: colors.yellow,
+    backgroundColor: "#1e1e1e",
+    borderRadius: 8,
+    marginTop: 5,
+  },
+  button: {
+    backgroundColor: colors.yellow,
+    marginTop: 20,
+    padding: 10,
+  },
+  buttonText: {
+    color: colors.black,
+    fontSize: 25,
   },
 });
