@@ -116,16 +116,16 @@ export default function AddProcesses() {
           dropdownIconColor={colors.yellow}
         >
           <Picker.Item label="Selecione um status" value="" />
-          <Picker.Item label="Distribuído" value="distribuido" />
-          <Picker.Item label="Em andamento" value="em_andamento" />
-          <Picker.Item label="Concluso para decisão" value="concluso_para_decisao" />
-          <Picker.Item label="Aguardando audiência" value="aguardando_audiencia" />
-          <Picker.Item label="Sentenciado" value="sentenciado" />
-          <Picker.Item label="Recursal" value="recursal" />
-          <Picker.Item label="Suspenso" value="suspenso" />
-          <Picker.Item label="Arquivado" value="arquivado" />
-          <Picker.Item label="Trânsito em julgado" value="transito_em_julgado" />
-          <Picker.Item label="Extinto" value="extinto" />
+          <Picker.Item label="Distribuído" value="Distribuído" />
+          <Picker.Item label="Em andamento" value="Em Andamento" />
+          <Picker.Item label="Concluso para decisão" value="Concluso para Decisão" />
+          <Picker.Item label="Aguardando audiência" value="Aguardando audiência" />
+          <Picker.Item label="Sentenciado" value="Setenciado" />
+          <Picker.Item label="Recursal" value="Recursal" />
+          <Picker.Item label="Suspenso" value="Suspenso" />
+          <Picker.Item label="Arquivado" value="Arquivado" />
+          <Picker.Item label="Trânsito em julgado" value="Trânsito em julgado" />
+          <Picker.Item label="Extinto" value="Extinto" />
         </Picker>
 
         <TouchableOpacity style={styles.button} onPress={handleAddProcess}>

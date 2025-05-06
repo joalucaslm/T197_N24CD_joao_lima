@@ -43,8 +43,10 @@ export default function FilterModal({
               <AntDesign name="close" size={24} color={colors.black} />
             </TouchableOpacity>
           </View>
-
-          <ScrollView style={styles.modalBody}>
+          <ScrollView
+            style={styles.modalBody}
+            contentContainerStyle={{ paddingBottom: 30 }}
+          >
             <Text style={styles.filterLabel}>Status</Text>
             {statusOptions.map((status) => (
               <TouchableOpacity

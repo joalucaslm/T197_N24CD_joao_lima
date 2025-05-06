@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <UserHeader user={user.user} job={user.job} image={user.image}/>
+      <UserHeader user={user.user} job={user.job} image={user.image}/> 
 
       <View>
         <TouchableOpacity
@@ -27,13 +27,6 @@ export default function Home() {
           onPress={() => navigation.navigate("ProcessesView")}
         >
           <Text style={styles.buttonText}>Ver processos</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("AddProcess")}
-        >
-          <Text style={styles.buttonText}>Cadastrar novo processo</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
