@@ -12,7 +12,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { db } from "@/services/firebase";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 
+import { ProcessType } from "@/interface/Process";
 import ProcessCard from "@/components/ProcessCard";
 import ClientCard from "@/components/ClientCard";
 
@@ -21,72 +25,44 @@ import colors from "@/styles/globalStyles";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const processos = [
-  {
-    id: "1",
-    numero: "12345",
-    cliente: "Cliente A",
-    assunto: "Assunto 1",
-    tribunal: "Tribunal X",
-    status: "Em andamento",
-    dataAtualizacao: "2025-05-07",
-    proximaAudiencia: "2025-06-01",
-  },
-  {
-    id: "2",
-    numero: "12346",
-    cliente: "Cliente B",
-    assunto: "Assunto 2",
-    tribunal: "Tribunal Y",
-    status: "Concluído",
-    dataAtualizacao: "2025-05-07",
-    proximaAudiencia: "2025-06-01",
-  },
-  {
-    id: "3",
-    numero: "12347",
-    cliente: "Cliente C",
-    assunto: "Assunto 3",
-    tribunal: "Tribunal Z",
-    status: "Em andamento",
-    dataAtualizacao: "2025-05-07",
-    proximaAudiencia: "2025-06-01",
-  },
-  {
-    id: "3",
-    numero: "12347",
-    cliente: "Cliente C",
-    assunto: "Assunto 3",
-    tribunal: "Tribunal Z",
-    status: "Em andamento",
-    dataAtualizacao: "2025-05-07",
-    proximaAudiencia: "2025-06-01",
-  },
-  {
-    id: "3",
-    numero: "12347",
-    cliente: "Cliente C",
-    assunto: "Assunto 3",
-    tribunal: "Tribunal Z",
-    status: "Em andamento",
-    dataAtualizacao: "2025-05-07",
-    proximaAudiencia: "2025-06-01",
-  },
-  {
-    id: "3",
-    numero: "12347",
-    cliente: "Cliente C",
-    assunto: "Assunto 3",
-    tribunal: "Tribunal Z",
-    status: "Em andamento",
-    dataAtualizacao: "2025-05-07",
-    proximaAudiencia: "2025-06-01",
-  },
-];
-
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
   const user = useSelector((state: RootState) => state.user);
+
+  const [processos, setProcessos] = useState<ProcessType[]>([]);
+
+  useEffect(() => {
+    const fetchProcessos = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "processes"));
+        const fetchedProcessos: ProcessType[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          fetchedProcessos.push({
+            id: doc.id,
+            numero: data.processNumber,
+            cliente: data.client,
+            assunto: data.subject,
+            tribunal: data.court,
+            status: data.status,
+            dataAtualizacao: new Date(
+              data.lastUpdate?.seconds * 1000
+            ).toLocaleDateString("pt-BR"),
+            proximaAudiencia: new Date(data.nextHearing).toLocaleDateString(
+              "pt-BR"
+            ),
+          });
+        });
+
+        setProcessos(fetchedProcessos);
+      } catch (error) {
+        console.error("Erro ao buscar processos:", error);
+      }
+    };
+
+    fetchProcessos();
+  }, []);
 
   return (
     <View style={styles.container}>

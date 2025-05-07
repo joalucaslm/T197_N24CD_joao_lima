@@ -144,13 +144,16 @@ export default function ProcessesView() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity
+        style={styles.homePosition}
+        onPress={() => navigation.navigate("Home")}
+      >
+        <Image
+          style={styles.homeIcon}
+          source={require("@/assets/icons/yellow-home.png")}
+        />
+      </TouchableOpacity>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.homePosition}
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Image style={styles.homeIcon}  source={require("@/assets/icons/yellow-home.png")} />
-        </TouchableOpacity>
         <Text style={styles.title}>Processos</Text>
         <Text style={styles.subtitle}>
           Gerencie todos os seus processos em um só lugar
@@ -263,12 +266,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   homePosition: {
+    zIndex: 50,
     position: "absolute",
     top: 50,
     right: 40,
   },
   homeIcon: {
-    width: 30,
-    height: 30,
-  }
+    width: 40,
+    height: 40,
+  },
 });

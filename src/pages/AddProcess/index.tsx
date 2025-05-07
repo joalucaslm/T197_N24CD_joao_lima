@@ -1,19 +1,24 @@
-  import { StatusBar } from "expo-status-bar";
-  import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
-  import { useState } from "react";
-  import { Picker } from "@react-native-picker/picker";
-  import DateTimePicker from "@react-native-community/datetimepicker";
-  import colors from "@/styles/globalStyles";
+import { StatusBar } from "expo-status-bar";
+import { TouchableOpacity, StyleSheet, Image, Text, View } from "react-native";
+import { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import colors from "@/styles/globalStyles";
 
-  import { collection, addDoc, Timestamp } from "firebase/firestore";
-  import { db } from "@/services/firebase";
-  import { Alert } from "react-native";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "@/services/firebase";
+import { Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/navigation";
 
-  import WaveShape from "@/components/WaveShape";
-  import InputIcon from "@/components/InputIcon";
+import WaveShape from "@/components/WaveShape";
+import InputIcon from "@/components/InputIcon";
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function AddProcesses() {
+  const navigation = useNavigation<NavigationProp>();
   const [processNumber, setProcessNumber] = useState("");
   const [client, setClient] = useState("");
   const [subject, setSubject] = useState("");
@@ -25,7 +30,14 @@ export default function AddProcesses() {
   const [date, setDate] = useState(new Date());
 
   const handleAddProcess = async () => {
-    if (!processNumber || !client || !subject || !court || !nextHearing || !status) {
+    if (
+      !processNumber ||
+      !client ||
+      !subject ||
+      !court ||
+      !nextHearing ||
+      !status
+    ) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;
     }
@@ -60,6 +72,15 @@ export default function AddProcesses() {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <WaveShape />
+      <TouchableOpacity
+        style={styles.homePosition}
+        onPress={() => navigation.navigate("Home")}
+      >
+        <Image
+          style={styles.homeIcon}
+          source={require("@/assets/icons/yellow-left-arrow.png")}
+        />
+      </TouchableOpacity>
       <View style={styles.inputsContainer}>
         <Text style={styles.text}>Adicione o processo</Text>
         <InputIcon
@@ -87,10 +108,15 @@ export default function AddProcesses() {
           firstIcon={false}
         />
 
-        <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateButton}>
+        <TouchableOpacity
+          onPress={() => setShowPicker(true)}
+          style={styles.dateButton}
+        >
           <Text style={styles.dateText}>
             {nextHearing
-              ? `Data da audiência: ${new Date(nextHearing).toLocaleDateString()}`
+              ? `Data da audiência: ${new Date(
+                  nextHearing
+                ).toLocaleDateString()}`
               : "Selecionar data da próxima audiência"}
           </Text>
         </TouchableOpacity>
@@ -118,13 +144,22 @@ export default function AddProcesses() {
           <Picker.Item label="Selecione um status" value="" />
           <Picker.Item label="Distribuído" value="Distribuído" />
           <Picker.Item label="Em andamento" value="Em Andamento" />
-          <Picker.Item label="Concluso para decisão" value="Concluso para Decisão" />
-          <Picker.Item label="Aguardando audiência" value="Aguardando audiência" />
+          <Picker.Item
+            label="Concluso para decisão"
+            value="Concluso para Decisão"
+          />
+          <Picker.Item
+            label="Aguardando audiência"
+            value="Aguardando audiência"
+          />
           <Picker.Item label="Sentenciado" value="Setenciado" />
           <Picker.Item label="Recursal" value="Recursal" />
           <Picker.Item label="Suspenso" value="Suspenso" />
           <Picker.Item label="Arquivado" value="Arquivado" />
-          <Picker.Item label="Trânsito em julgado" value="Trânsito em julgado" />
+          <Picker.Item
+            label="Trânsito em julgado"
+            value="Trânsito em julgado"
+          />
           <Picker.Item label="Extinto" value="Extinto" />
         </Picker>
 
@@ -186,5 +221,14 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.black,
     fontSize: 25,
+  },
+  homePosition: {
+    position: "absolute",
+    top: 80,
+    left: 30,
+  },
+  homeIcon: {
+    width: 30,
+    height: 30,
   },
 });
