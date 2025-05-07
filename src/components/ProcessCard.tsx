@@ -6,6 +6,10 @@ import {
   FontAwesome,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/navigation";
+
 import { ProcessCardType } from "@/interface/ProcessCard";
 
 const colors = {
@@ -19,12 +23,17 @@ const colors = {
   darkBlue: "#0066CC",
 };
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function ProcessCard({ processo, onPress }: ProcessCardType) {
+  const navigation = useNavigation<NavigationProp>();
+  const handlePress = onPress ? onPress : () => navigation.navigate("EditProcess");
+
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={onPress}
-      activeOpacity={0.7} // Controls opacity when pressed
+      onPress={handlePress}
+      activeOpacity={0.7}
     >
       <View style={styles.cardBorder} />
       <View style={styles.cardContent}>

@@ -6,6 +6,7 @@ import Home from "@/pages/Home";
 import AddProcess from "@/pages/AddProcess";
 import AdminRegister from "@/pages/AdminRegister";
 import ProcessesView from "@/pages/ProcessesView";
+import EditProcess from "@/pages/EditProcess";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -13,6 +14,7 @@ export type RootStackParamList = {
   Home: undefined;
   AdminRegister: undefined;
   ProcessesView: undefined;
+  EditProcess: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,6 +32,7 @@ export default function Routes() {
 
         <Stack.Screen name="ProcessesView" component={ProcessesView} />
         <Stack.Screen name="AddProcess" component={AddProcess} />
+        <Stack.Screen name="EditProcess" component={EditProcess} />
       </Stack.Navigator>
     </NavigationContainer>
   );
