@@ -1,21 +1,12 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import React from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import {
   AntDesign,
   Feather,
   FontAwesome,
   MaterialIcons,
 } from "@expo/vector-icons";
-
 import { ProcessCardType } from "@/interface/ProcessCard";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 
 const colors = {
   black: "#000",
@@ -29,72 +20,18 @@ const colors = {
 };
 
 export default function ProcessCard({ processo, onPress }: ProcessCardType) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({ ...processo });
-  const [showPicker, setShowPicker] = useState(false);
-  const [pickerTarget, setPickerTarget] = useState<
-    "dataAtualizacao" | "proximaAudiencia" | null
-  >(null);
-  const [date, setDate] = useState(new Date());
-
-  const handleDateChange = (
-    event: DateTimePickerEvent,
-    selectedDate?: Date
-  ) => {
-    if (event.type === "set" && selectedDate && pickerTarget) {
-      const day = selectedDate.getDate().toString().padStart(2, "0");
-      const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
-      const year = selectedDate.getFullYear();
-      const formattedDate = `${day}/${month}/${year}`;
-      setFormData({ ...formData, [pickerTarget]: formattedDate });
-    }
-
-    setShowPicker(false);
-    setPickerTarget(null);
-  };
-
-  const handleChange = (key: string, value: string) => {
-    setFormData({ ...formData, [key]: value });
-  };
-
-  const toggleEdit = () => {
-    if (isEditing) {
-      setIsEditing(false); 
-    } else {
-      setIsEditing(true); 
-      if (onPress) onPress();
-    }
-  };
-
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={toggleEdit}
-      activeOpacity={0.9}
+      onPress={onPress}
+      activeOpacity={0.7} // Controls opacity when pressed
     >
       <View style={styles.cardBorder} />
       <View style={styles.cardContent}>
         <View style={styles.cardHeader}>
-          {isEditing ? (
-            <TextInput
-              style={styles.input}
-              value={formData.numero}
-              onChangeText={(text) => handleChange("numero", text)}
-            />
-          ) : (
-            <Text style={styles.processNumber}>{formData.numero}</Text>
-          )}
-
+          <Text style={styles.processNumber}>{processo.numero}</Text>
           <View style={styles.statusBadge}>
-            {isEditing ? (
-              <TextInput
-                style={[styles.input, styles.smallInput]}
-                value={formData.status}
-                onChangeText={(text) => handleChange("status", text)}
-              />
-            ) : (
-              <Text style={styles.statusText}>{formData.status}</Text>
-            )}
+            <Text style={styles.statusText}>{processo.status}</Text>
           </View>
         </View>
 
@@ -106,15 +43,7 @@ export default function ProcessCard({ processo, onPress }: ProcessCardType) {
               color={colors.darkGray}
               style={styles.icon}
             />
-            {isEditing ? (
-              <TextInput
-                style={styles.input}
-                value={formData.cliente}
-                onChangeText={(text) => handleChange("cliente", text)}
-              />
-            ) : (
-              <Text style={styles.infoText}>{formData.cliente}</Text>
-            )}
+            <Text style={styles.infoText}>{processo.cliente}</Text>
           </View>
           <View style={styles.infoRow}>
             <Feather
@@ -123,15 +52,7 @@ export default function ProcessCard({ processo, onPress }: ProcessCardType) {
               color={colors.darkGray}
               style={styles.icon}
             />
-            {isEditing ? (
-              <TextInput
-                style={styles.input}
-                value={formData.assunto}
-                onChangeText={(text) => handleChange("assunto", text)}
-              />
-            ) : (
-              <Text style={styles.infoText}>{formData.assunto}</Text>
-            )}
+            <Text style={styles.infoText}>{processo.assunto}</Text>
           </View>
           <View style={styles.infoRow}>
             <MaterialIcons
@@ -140,15 +61,7 @@ export default function ProcessCard({ processo, onPress }: ProcessCardType) {
               color={colors.darkGray}
               style={styles.icon}
             />
-            {isEditing ? (
-              <TextInput
-                style={styles.input}
-                value={formData.tribunal}
-                onChangeText={(text) => handleChange("tribunal", text)}
-              />
-            ) : (
-              <Text style={styles.infoText}>Tribunal: {formData.tribunal}</Text>
-            )}
+            <Text style={styles.infoText}>Tribunal: {processo.tribunal}</Text>
           </View>
         </View>
 
@@ -160,24 +73,10 @@ export default function ProcessCard({ processo, onPress }: ProcessCardType) {
               color={colors.darkGray}
               style={styles.icon}
             />
-            {isEditing ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setShowPicker(true);
-                  setPickerTarget("dataAtualizacao");
-                }}
-              >
-                <Text style={styles.dateText}>
-                  Atualizado: {formData.dataAtualizacao}
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <Text style={styles.dateText}>
-                Atualizado: {formData.dataAtualizacao}
-              </Text>
-            )}
+            <Text style={styles.dateText}>
+              Atualizado: {processo.dataAtualizacao}
+            </Text>
           </View>
-
           <View style={styles.dateRow}>
             <AntDesign
               name="calendar"
@@ -185,32 +84,10 @@ export default function ProcessCard({ processo, onPress }: ProcessCardType) {
               color={colors.darkGray}
               style={styles.icon}
             />
-            {isEditing ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setShowPicker(true);
-                  setPickerTarget("proximaAudiencia");
-                }}
-              >
-                <Text style={styles.dateText}>
-                  Próxima audiência: {formData.proximaAudiencia}
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <Text style={styles.dateText}>
-                Próxima audiência: {formData.proximaAudiencia}
-              </Text>
-            )}
+            <Text style={styles.dateText}>
+              Próxima audiência: {processo.proximaAudiencia}
+            </Text>
           </View>
-
-          {showPicker && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="default"
-              onChange={handleDateChange}
-            />
-          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -286,15 +163,5 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 11,
     color: colors.darkGray,
-  },
-  input: {
-    fontSize: 13,
-    color: colors.black,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: colors.lightGray,
-    borderRadius: 4,
-    paddingHorizontal: 6,
-    flex: 1,
   },
 });
