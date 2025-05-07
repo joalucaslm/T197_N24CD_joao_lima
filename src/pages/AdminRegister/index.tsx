@@ -8,6 +8,9 @@ import {
   Modal,
   ScrollView,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/navigation";
 
 import { useState, useEffect } from "react";
 import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
@@ -22,7 +25,10 @@ const characters = [
   { id: "mulherDois", img: require("@/assets/character/MulherDois.png") },
 ];
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function AdminRegister() {
+  const navigation = useNavigation<NavigationProp>();
   const [email, setEmail] = useState("");
   const [user, setuser] = useState("");
   const [job, setJob] = useState("");
@@ -80,6 +86,13 @@ export default function AdminRegister() {
   };
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.arrow}
+        onPress={() => navigation.navigate("Home")}
+      >
+        <Image source={require("@/assets/icons/yellow-left-arrow.png")} />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Faça seu cadastro</Text>
 
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -232,5 +245,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     marginTop: 5,
+  },
+  arrow: {
+    position: "absolute",
+    top: 60,
+    left: 20,
+    resizeMode: "contain",
+    width: 80,
+    height: "auto",
   },
 });
