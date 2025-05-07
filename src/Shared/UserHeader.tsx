@@ -29,14 +29,14 @@ export default function UserHeader({ user, job, image }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: "static",
     top: 0,
     left: 0,
     right: 0,
     backgroundColor: colors.yellow,
     paddingTop: 20,
     paddingBottom: 10,
-    zIndex: 10,
+    zIndex: 100,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -45,10 +45,9 @@ const styles = StyleSheet.create({
   },
   header: {
     marginTop: 20,
-    marginLeft: 100,
     width: "100%",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     gap: 10,
   },

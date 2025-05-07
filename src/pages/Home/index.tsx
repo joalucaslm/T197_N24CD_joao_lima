@@ -94,6 +94,22 @@ export default function Home() {
       <UserHeader user={user.user} job={user.job} image={user.image} />
 
       <View style={styles.mainContainer}>
+        <View style={styles.headerButtons}>
+          <TouchableOpacity
+            style={styles.arrow}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Image source={require("@/assets/icons/yellow-left-arrow.png")} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("AdminRegister")}
+          >
+            <Text style={styles.buttonText}>Cadastrar novo administrado</Text>
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.sectionTitle}>Processos recentes</Text>
 
         <ScrollView
@@ -136,24 +152,6 @@ export default function Home() {
             nextHearing="10/10/2025"
           />
         </ScrollView>
-
-        <View style={styles.arrowButton}>
-          <TouchableOpacity
-            style={styles.arrow}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Image source={require("@/assets/icons/yellow-left-arrow.png")} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.buttonAdmin}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("AdminRegister")}
-          >
-            <Text style={styles.buttonText}>Cadastrar novo administrado</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -170,9 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkGray,
     padding: 10,
     borderRadius: 20,
-    marginTop: 100,
     width: "100%",
-    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignContent: "center",
@@ -191,11 +187,13 @@ const styles = StyleSheet.create({
     gap: 10,
     marginBottom: 20,
   },
-  buttonAdmin: {
-    position: "absolute",
-    top: 40,
-    left: "35%",
-    transform: [{ translateX: -50 }],
+  headerButtons: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginBottom: 20,
   },
   button: {
     backgroundColor: colors.yellow,
@@ -207,15 +205,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "800",
   },
-  arrowButton: {
-    position: "absolute",
-    top: 50,
-    left: 65,
-    transform: [{ translateX: -50 }],
-  },
   arrow: {
     resizeMode: "contain",
     width: 80,
-    height: 80,
+    height: "auto",
   },
 });
