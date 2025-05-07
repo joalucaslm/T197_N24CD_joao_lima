@@ -3,10 +3,14 @@ import {
   StyleSheet,
   View,
   Text,
+  Image,
   TouchableOpacity,
   FlatList,
   SafeAreaView,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/navigation";
 
 import ProcessCard from "@/components/ProcessCard";
 import SearchBar from "@/components/SearchBar";
@@ -45,7 +49,10 @@ const sortOptions = [
   { value: "numero", label: "Número do processo" },
 ];
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function ProcessesView() {
+  const navigation = useNavigation<NavigationProp>();
   const [processos, setProcessos] = useState<ProcessType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("Todos");
@@ -138,6 +145,12 @@ export default function ProcessesView() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.homePosition}
+          onPress={() => navigation.navigate("Home")}
+        >
+          <Image style={styles.homeIcon}  source={require("@/assets/icons/yellow-home.png")} />
+        </TouchableOpacity>
         <Text style={styles.title}>Processos</Text>
         <Text style={styles.subtitle}>
           Gerencie todos os seus processos em um só lugar
@@ -207,7 +220,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: 40,
+    paddingTop: 60,
     paddingBottom: 10,
   },
   title: {
@@ -249,4 +262,13 @@ const styles = StyleSheet.create({
     color: colors.yellow,
     fontWeight: "bold",
   },
+  homePosition: {
+    position: "absolute",
+    top: 50,
+    right: 40,
+  },
+  homeIcon: {
+    width: 30,
+    height: 30,
+  }
 });

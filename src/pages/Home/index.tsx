@@ -110,7 +110,15 @@ export default function Home() {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.sectionTitle}>Processos recentes</Text>
+        <View style={styles.recentProcess}>
+          <Text style={styles.sectionTitle}>Processos recentes</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("ProcessesView")}
+          >
+            <Text style={styles.processAcess}>Área de processos</Text>
+          </TouchableOpacity>
+        </View>
 
         <ScrollView
           style={styles.cardContainer}
@@ -209,5 +217,16 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     width: 80,
     height: "auto",
+  },
+  recentProcess: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: 20,
+  },
+  processAcess: {
+    fontSize: 14,
+    fontWeight: 500,
   },
 });
