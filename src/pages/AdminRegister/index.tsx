@@ -25,6 +25,7 @@ const characters = [
 export default function AdminRegister() {
   const [email, setEmail] = useState("");
   const [user, setuser] = useState("");
+  const [job, setJob] = useState("");
   const [password, setpassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -37,37 +38,39 @@ export default function AdminRegister() {
   }, []);
 
   const handleRegister = async () => {
-    if (!email || !user || !password || !confirmPassword) {
+    if (!email || !user || !job || !password || !confirmPassword) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;
     }
-  
+
     if (password !== confirmPassword) {
       Alert.alert("Erro", "As senhas não coincidem.");
       return;
     }
-  
+
     try {
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("email", "==", email));
       const querySnapshot = await getDocs(q);
-  
+
       if (!querySnapshot.empty) {
         Alert.alert("Erro", "Já existe um usuário com esse email.");
         return;
       }
-  
+
       await addDoc(usersRef, {
         email,
         user,
+        job,
         password,
-        personagem: selectedCharacter.id,
+        image: selectedCharacter.id,
         criadoEm: new Date(),
       });
-  
+
       Alert.alert("Sucesso", "Usuário registrado!");
       setEmail("");
       setuser("");
+      setJob("");
       setpassword("");
       setConfirmPassword("");
     } catch (error) {
@@ -118,6 +121,12 @@ export default function AdminRegister() {
           placeholder="Usuário"
           value={user}
           onChangeText={setuser}
+          firstIcon={false}
+        />
+        <InputIcon
+          placeholder="Cargo"
+          value={job}
+          onChangeText={setJob}
           firstIcon={false}
         />
         <InputIcon
