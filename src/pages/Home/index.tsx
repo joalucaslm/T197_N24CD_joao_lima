@@ -16,6 +16,7 @@ import { db } from "@/services/firebase";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 
+import { ClientCardType } from "@/interface/ClientCard";
 import { ProcessType } from "@/interface/Process";
 import ProcessCard from "@/components/ProcessCard";
 import ClientCard from "@/components/ClientCard";
@@ -30,6 +31,7 @@ export default function Home() {
   const user = useSelector((state: RootState) => state.user);
 
   const [processos, setProcessos] = useState<ProcessType[]>([]);
+  const [clientCards, setClientCards] = useState<ClientCardType[]>([]);
 
   useEffect(() => {
     const fetchProcessos = async () => {
@@ -62,6 +64,31 @@ export default function Home() {
     };
 
     fetchProcessos();
+  }, []);
+
+  useEffect(() => {
+    const fetchClientCards = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "client"));
+        const clientCards: ClientCardType[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          clientCards.push({
+            id: doc.id,
+            image: data.image,
+            name: data.name,
+            nextHearing: data.nextHearing,
+          });
+        });
+
+        setClientCards(clientCards);
+      } catch (error) {
+        console.error("Erro ao buscar os clientes:", error);
+      }
+    };
+
+    fetchClientCards();
   }, []);
 
   return (
@@ -115,26 +142,15 @@ export default function Home() {
           style={styles.cardContainer}
           showsVerticalScrollIndicator={false}
         >
-          <ClientCard
-            image="homemDois"
-            name="João Lucas"
-            nextHearing="17/09/2025"
-          />
-          <ClientCard
-            image="mulherDois"
-            name="Ana Luiza"
-            nextHearing="04/08/2025"
-          />
-          <ClientCard
-            image="mulherUm"
-            name="Katarina"
-            nextHearing="27/11/2025"
-          />
-          <ClientCard
-            image="homemUm"
-            name="Paulo Henrique"
-            nextHearing="10/10/2025"
-          />
+          {clientCards.map((client, index) => (
+            <View  key={`${client.id}-${index}`}>
+              <ClientCard
+                image={client.image}
+                name={client.name}
+                nextHearing={client.nextHearing}
+              />
+            </View>
+          ))}
         </ScrollView>
       </View>
     </View>
