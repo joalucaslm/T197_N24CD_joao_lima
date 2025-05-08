@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/navigation";
 
-import { ProcessCardType } from "@/interface/ProcessCard";
+import { ProcessType } from "@/interface/Process";
 
 const colors = {
   black: "#000",
@@ -25,7 +25,13 @@ const colors = {
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-export default function ProcessCard({ processo, onPress }: ProcessCardType) {
+export interface ProcessCardProps {
+  processo: ProcessType;
+  onPress?: () => void;
+  onEdit?: (id: string) => void;
+}
+
+export default function ProcessCard({ processo, onPress, onEdit }: ProcessCardProps) {
   const navigation = useNavigation<NavigationProp>();
   const handlePress = onPress ? onPress : () => navigation.navigate("EditProcess");
 
@@ -98,6 +104,19 @@ export default function ProcessCard({ processo, onPress }: ProcessCardType) {
             </Text>
           </View>
         </View>
+        
+        {onEdit && (
+          <TouchableOpacity 
+            style={styles.editButton}
+            onPress={(e) => {
+              // Evitar que o toque no botão dispare o onPress do card
+              e.stopPropagation();
+              onEdit(processo.id);
+            }}
+          >
+            <Text style={styles.editButtonText}>Editar</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -172,5 +191,18 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 11,
     color: colors.darkGray,
+  },
+  editButton: {
+    alignSelf: 'flex-end',
+    backgroundColor: colors.yellow,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 4,
+    marginTop: 8,
+  },
+  editButtonText: {
+    color: colors.black,
+    fontSize: 12,
+    fontWeight: '500',
   },
 });

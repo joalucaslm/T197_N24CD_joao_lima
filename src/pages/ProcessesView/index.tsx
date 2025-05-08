@@ -12,6 +12,10 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/navigation";
 
+import EditProcessModal from "@/components/EditProcessModal";
+import { doc, updateDoc, collection, getDocs } from "firebase/firestore";
+import Toast from "react-native-toast-message";
+
 import ProcessCard from "@/components/ProcessCard";
 import SearchBar from "@/components/SearchBar";
 import FilterButtons from "@/components/FilterButtons";
@@ -19,7 +23,6 @@ import FilterModal from "@/components/FilterModal";
 import SortModal from "@/components/SortModal";
 import AddProcessoButton from "@/components/AddProcess";
 
-import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/services/firebase";
 
 import { ProcessType } from "@/interface/Process";
@@ -60,6 +63,80 @@ export default function ProcessesView() {
   const [orderBy, setOrderBy] = useState("dataAtualizacao");
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [sortModalVisible, setSortModalVisible] = useState(false);
+  const [selectedProcess, setSelectedProcess] = useState<ProcessType | null>(null);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+
+  const handleEditProcess = (id: string) => {
+    const process = processos.find(p => p.id === id);
+    if (process) {
+      setSelectedProcess(process);
+      setEditModalVisible(true);
+    }
+  };
+
+  // Função para salvar as alterações
+  const handleSaveProcess = async (id: string, data: { status: string; proximaAudiencia: string }) => {
+    try {
+      // Referência para o documento no Firestore
+      const processRef = doc(db, "processes", id);
+      
+      // Preparar os dados para atualização
+      // Nota: Você precisa mapear o status para o formato armazenado no seu banco de dados
+      const statusParaDB = traduzirStatusParaDB(data.status);
+      
+      // Converter a data de DD/MM/YYYY para Date
+      const [dia, mes, ano] = data.proximaAudiencia.split("/").map(Number);
+      const dataAudiencia = new Date(ano, mes - 1, dia);
+      
+      // Atualizar no Firestore
+      await updateDoc(processRef, {
+        status: statusParaDB,
+        nextHearing: dataAudiencia,
+        lastUpdate: new Date(), // Atualizar a data de atualização
+      });
+      
+      // Atualizar o estado local
+      setProcessos(prevProcessos => 
+        prevProcessos.map(p => 
+          p.id === id
+            ? {
+                ...p,
+                status: data.status,
+                proximaAudiencia: data.proximaAudiencia,
+                dataAtualizacao: formatarData(new Date()),
+              }
+            : p
+        )
+      );
+      
+      // Fechar o modal e mostrar feedback
+      setEditModalVisible(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Processo atualizado com sucesso!',
+      });
+      
+    } catch (error) {
+      console.error("Erro ao atualizar processo:", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao atualizar processo',
+        text2: 'Tente novamente mais tarde',
+      });
+    }
+  };
+  
+  // Função para traduzir o status para o formato do banco de dados
+  function traduzirStatusParaDB(status: string): string {
+    const mapa: { [key: string]: string } = {
+      "Em andamento": "em_andamento",
+      "Aguardando manifestação": "aguardando_manifestacao",
+      "Concluso para decisão": "concluso_para_decisao",
+      "Prazo em curso": "prazo_em_curso",
+      // Adicione os demais status conforme necessário
+    };
+    return mapa[status] || status.toLowerCase().replace(/ /g, "_");
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +155,7 @@ export default function ProcessesView() {
             tribunal: data.court,
             status: traduzirStatus(data.status),
             dataAtualizacao: formatarData(data.lastUpdate?.toDate?.()),
-            proximaAudiencia: formatarData(new Date(data.nextHearing)),
+            proximaAudiencia: formatarData(data.nextHearing?.toDate?.()),
           });
         });
 
@@ -124,7 +201,7 @@ export default function ProcessesView() {
         // Conversão de data no formato DD/MM/YYYY para objeto Date
         const dateA = a.dataAtualizacao.split("/").reverse().join("-");
         const dateB = b.dataAtualizacao.split("/").reverse().join("-");
-        return new Date(dateB) - new Date(dateA);
+        return new Date(dateB).getTime() - new Date(dateA).getTime();
       }
       if (orderBy === "cliente") {
         return a.cliente.localeCompare(b.cliente);
@@ -153,6 +230,7 @@ export default function ProcessesView() {
           source={require("@/assets/icons/yellow-home.png")}
         />
       </TouchableOpacity>
+      
       <View style={styles.header}>
         <Text style={styles.title}>Processos</Text>
         <Text style={styles.subtitle}>
@@ -173,7 +251,12 @@ export default function ProcessesView() {
 
       <FlatList
         data={processosExibidos}
-        renderItem={({ item }) => <ProcessCard processo={item} />}
+        renderItem={({ item }) => (
+          <ProcessCard 
+            processo={item} 
+            onEdit={handleEditProcess}
+          />
+        )}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.processList}
         showsVerticalScrollIndicator={false}
@@ -211,6 +294,13 @@ export default function ProcessesView() {
         setOrderBy={setOrderBy}
         sortOptions={sortOptions}
         closeModal={() => setSortModalVisible(false)}
+      />
+
+      <EditProcessModal
+        visible={editModalVisible}
+        process={selectedProcess}
+        onClose={() => setEditModalVisible(false)}
+        onSave={handleSaveProcess}
       />
     </SafeAreaView>
   );
