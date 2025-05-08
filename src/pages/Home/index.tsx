@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Text,
-  Image,
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -16,6 +15,7 @@ import { db } from "@/services/firebase";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 
+import { ClientCardType } from "@/interface/ClientCard";
 import { ProcessType } from "@/interface/Process";
 import ProcessCard from "@/components/ProcessCard";
 import ClientCard from "@/components/ClientCard";
@@ -30,6 +30,7 @@ export default function Home() {
   const user = useSelector((state: RootState) => state.user);
 
   const [processos, setProcessos] = useState<ProcessType[]>([]);
+  const [clientCards, setClientCards] = useState<ClientCardType[]>([]);
 
   useEffect(() => {
     const fetchProcessos = async () => {
@@ -64,6 +65,31 @@ export default function Home() {
     fetchProcessos();
   }, []);
 
+  useEffect(() => {
+    const fetchClientCards = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "client"));
+        const clientCards: ClientCardType[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          clientCards.push({
+            id: doc.id,
+            image: data.image,
+            name: data.name,
+            nextHearing: data.nextHearing,
+          });
+        });
+
+        setClientCards(clientCards);
+      } catch (error) {
+        console.error("Erro ao buscar os clientes:", error);
+      }
+    };
+
+    fetchClientCards();
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -71,12 +97,7 @@ export default function Home() {
 
       <View style={styles.mainContainer}>
         <View style={styles.headerButtons}>
-          <TouchableOpacity
-            style={styles.arrow}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Image source={require("@/assets/icons/yellow-left-arrow.png")} />
-          </TouchableOpacity>
+         
 
           <TouchableOpacity
             style={styles.button}
@@ -92,7 +113,7 @@ export default function Home() {
             style={styles.button}
             onPress={() => navigation.navigate("ProcessesView")}
           >
-            <Text style={styles.processAcess}>Área de processos</Text>
+            <Text style={styles.processAcess}>Ver processos</Text>
           </TouchableOpacity>
         </View>
 
@@ -115,26 +136,15 @@ export default function Home() {
           style={styles.cardContainer}
           showsVerticalScrollIndicator={false}
         >
-          <ClientCard
-            image="homemDois"
-            name="João Lucas"
-            nextHearing="17/09/2025"
-          />
-          <ClientCard
-            image="mulherDois"
-            name="Ana Luiza"
-            nextHearing="04/08/2025"
-          />
-          <ClientCard
-            image="mulherUm"
-            name="Katarina"
-            nextHearing="27/11/2025"
-          />
-          <ClientCard
-            image="homemUm"
-            name="Paulo Henrique"
-            nextHearing="10/10/2025"
-          />
+          {clientCards.map((client, index) => (
+            <View  key={`${client.id}-${index}`}>
+              <ClientCard
+                image={client.image}
+                name={client.name}
+                nextHearing={client.nextHearing}
+              />
+            </View>
+          ))}
         </ScrollView>
       </View>
     </View>
@@ -175,7 +185,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
   },
@@ -188,11 +198,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: "800",
-  },
-  arrow: {
-    resizeMode: "contain",
-    width: 80,
-    height: "auto",
   },
   recentProcess: {
     display: "flex",

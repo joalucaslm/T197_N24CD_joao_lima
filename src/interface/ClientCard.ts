@@ -1,6 +1,6 @@
 export interface ClientCardType {
-    image: "homemUm" | "homemDois" | "mulherUm" | "mulherDois";
-    name: string;
-    nextHearing: string;
-  }
-  
+  id?: string;
+  image: "homemUm" | "homemDois" | "mulherUm" | "mulherDois";
+  name: string;
+  nextHearing: string;
+}
