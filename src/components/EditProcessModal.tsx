@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   processInfo: {
     marginBottom: 15,
     padding: 10,
-    backgroundColor: colors.yellow,
+    backgroundColor: colors.lightGray,
     borderRadius: 5,
   },
   processNumber: {

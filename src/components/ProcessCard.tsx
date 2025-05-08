@@ -31,16 +31,12 @@ export interface ProcessCardProps {
   onEdit?: (id: string) => void;
 }
 
-export default function ProcessCard({ processo, onPress, onEdit }: ProcessCardProps) {
+export default function ProcessCard({ processo, onEdit }: ProcessCardProps) {
   const navigation = useNavigation<NavigationProp>();
-  const handlePress = onPress ? onPress : () => navigation.navigate("EditProcess");
-
+  
   return (
     <TouchableOpacity
-      style={styles.card}
-      onPress={handlePress}
-      activeOpacity={0.7}
-    >
+      style={styles.card}>
       <View style={styles.cardBorder} />
       <View style={styles.cardContent}>
         <View style={styles.cardHeader}>
