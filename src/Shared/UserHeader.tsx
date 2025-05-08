@@ -1,7 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, SafeAreaView, View, Text, Image } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+} from "react-native";
 import { UserHeaderType } from "@/interface/UseHeader";
 import colors from "@/styles/globalStyles";
+
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/navigation";
 
 const images = {
   homemUm: require("@/assets/character/HomemUm.png"),
@@ -12,11 +23,20 @@ const images = {
 
 type Props = UserHeaderType;
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function UserHeader({ user, job, image }: Props) {
+  const navigation = useNavigation<NavigationProp>();
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.arrow}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Image source={require("@/assets/icons/black-left-arrow.png")} />
+        </TouchableOpacity>
         <Image style={styles.character} source={images[image]} />
         <View>
           <Text style={styles.user}>{user}</Text>
@@ -54,7 +74,8 @@ const styles = StyleSheet.create({
   character: {
     width: 80,
     height: 80,
-    marginRight: 20,
+    marginRight: 10,
+    marginLeft: -20
   },
   user: {
     fontSize: 20,
@@ -62,5 +83,10 @@ const styles = StyleSheet.create({
   },
   userJob: {
     color: colors.black,
+  },
+  arrow: {
+    resizeMode: "contain",
+    width: 80,
+    height: "auto",
   },
 });

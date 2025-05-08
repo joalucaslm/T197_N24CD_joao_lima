@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Text,
-  Image,
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -98,12 +97,7 @@ export default function Home() {
 
       <View style={styles.mainContainer}>
         <View style={styles.headerButtons}>
-          <TouchableOpacity
-            style={styles.arrow}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Image source={require("@/assets/icons/yellow-left-arrow.png")} />
-          </TouchableOpacity>
+         
 
           <TouchableOpacity
             style={styles.button}
@@ -119,7 +113,7 @@ export default function Home() {
             style={styles.button}
             onPress={() => navigation.navigate("ProcessesView")}
           >
-            <Text style={styles.processAcess}>Área de processos</Text>
+            <Text style={styles.processAcess}>Ver processos</Text>
           </TouchableOpacity>
         </View>
 
@@ -191,7 +185,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
   },
@@ -204,11 +198,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: "800",
-  },
-  arrow: {
-    resizeMode: "contain",
-    width: 80,
-    height: "auto",
   },
   recentProcess: {
     display: "flex",
